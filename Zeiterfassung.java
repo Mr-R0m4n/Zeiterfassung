@@ -38,16 +38,16 @@ public class Zeiterfassung {
         while (loop) {
             System.out.println();
             System.out.println("Bitte geben Sie das Datum des zu erfassenden Arbeitstages ein");
-            System.out.println("(TT.MM.JJJJ): ");
-            String date = sc.nextLine();
+            System.out.println("(JJJJ.MM.TT): ");
+            String date = sc.next();
             System.out.println();
             System.out.println("Bitte geben Sie nun den Beginn Ihrer Arbeitszeit ein");
             System.out.println("(hh:mm): ");
-            String startTime = sc.nextLine();
+            String startTime = sc.next();
             System.out.println();
             System.out.println("Bitte geben Sie nun das Ende Ihrer Arbeitszeit ein");
             System.out.println("(hh:mm): ");
-            String endTime = sc.nextLine();
+            String endTime = sc.next();
             System.out.println();
             System.out.println("Möchten Sie Ihre Pausenzeit manuell oder automatisch (30min) erfassen?");
             System.out.println("m = Manuell");
@@ -56,8 +56,8 @@ public class Zeiterfassung {
                 case "m" -> {
                     System.out.println();
                     System.out.println("Bitte geben Sie Ihre Pausenzeit in Minuten ein: ");
-                    String breakTime = sc.nextLine();
-                    this.allLines.add("Datum: " + date + "/ Arbeitsbeginn: " + startTime + "- Arbeitsende: " + endTime + "/ Pausendauer: " + breakTime + " min");
+                    String breakTime = sc.next();
+                    this.allLines.add("Datum: " + date + " / Arbeitsbeginn: " + startTime + " - Arbeitsende: " + endTime + " / Pausendauer: " + breakTime + " min");
                     System.out.println();
                 }
                 case "a" -> {
@@ -82,11 +82,11 @@ public class Zeiterfassung {
         //Redo loop?
         System.out.println();
         System.out.println("Möchtest du den Vorgang wiederholen? ");
-        System.out.println("1 = Ja");
-        System.out.println("2 = Nein");
+        System.out.println("J = Ja");
+        System.out.println("N = Nein");
         System.out.println();
         //Exit loop
-        if (sc.nextInt() != 1) {
+        if (!sc.next().contains("j")) {
             loop = false;
         }
         System.out.println();
