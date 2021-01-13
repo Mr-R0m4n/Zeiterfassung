@@ -16,6 +16,11 @@ public class Zeiterfassung {
     private final FileOutputStream fos = new FileOutputStream(path, true);
     private final ArrayList<String> allLines = new ArrayList<>(Files.readAllLines(Paths.get(path)));
     private boolean loop = true;
+    private String startTimeHours;
+    private String startTimeMinutes;
+    private String endTimeHours;
+    private String endTimeMinutes;
+    private String breakTime;
 
     //Constructors
     public Zeiterfassung() throws IOException {
@@ -38,18 +43,24 @@ public class Zeiterfassung {
         while (loop) {
             System.out.println();
             System.out.println("Bitte geben Sie das Datum des zu erfassenden Arbeitstages ein");
-            System.out.println("(JJJJ.MM.TT): ");
+            System.out.println("(TT.MM.JJJJ): ");
             String date = sc.next();
+            String year = date.substring(6);
+            String month = date.substring(2,6);
+            String day = date.substring(0,2);
+            date =  year + month + day;
             System.out.println();
             System.out.println("Bitte geben Sie nun den Beginn Ihrer Arbeitszeit ein");
             System.out.println("(hh:mm): ");
-            int startTimeHour = sc.nextInt();
-            System.out.print( startTimeHour  + " : " + startTimeHour );
-            int startTimeMinutes = sc.nextInt();
+            String startTime = sc.next();
+            this.startTimeHours = startTime.replaceAll("[:]","").substring(0,2);
+            this.startTimeMinutes = startTime.replaceAll("[:]","").substring(2);
             System.out.println();
             System.out.println("Bitte geben Sie nun das Ende Ihrer Arbeitszeit ein");
             System.out.println("(hh:mm): ");
             String endTime = sc.next();
+            this.endTimeHours = endTime.replaceAll("[:]","").substring(0,2);
+            this.endTimeMinutes = endTime.replaceAll("[:]","").substring(2);
             System.out.println();
             System.out.println("Möchten Sie Ihre Pausenzeit manuell oder automatisch (30min) erfassen?");
             System.out.println("m = Manuell");
@@ -58,15 +69,16 @@ public class Zeiterfassung {
                 case "m" -> {
                     System.out.println();
                     System.out.println("Bitte geben Sie Ihre Pausenzeit in Minuten ein: ");
-                    String breakTime = sc.next();
-                    this.allLines.add("Datum: " + date + " / Arbeitsbeginn: " + startTimeHour + " - Arbeitsende: " + endTime + " / Pausendauer: " + breakTime + " min");
+                    this.breakTime = sc.next();
+                    this.allLines.add("Datum: " + date + " / Arbeitsbeginn: " + startTime + " - Arbeitsende: " + endTime + " / Pausendauer: " + this.breakTime + " min" + overtimeCalc());
                     System.out.println();
                 }
                 case "a" -> {
                     System.out.println();
                     System.out.println("30 Minuten wurden Ihrer Pausenzeit hinzugefügt");
                     System.out.println();
-                    this.allLines.add("Datum: " + date + " / Arbeitsbeginn: " + startTimeHour + " - Arbeitsende: " + endTime + " / Pausendauer: " + "30 min");
+                    this.breakTime = "30";
+                    this.allLines.add("Datum: " + date + " / Arbeitsbeginn: " + startTime + " - Arbeitsende: " + endTime + " / Pausendauer: " + "30 min" + overtimeCalc());
                 }
                 default -> {
                     System.out.println();
@@ -78,6 +90,18 @@ public class Zeiterfassung {
             Files.write(Paths.get(path),this.allLines);
             redo();
         }
+    }
+
+    public String overtimeCalc(){
+        int startTimeHours = Integer.parseInt(this.startTimeHours);
+        int startTimeMinutes = Integer.parseInt(this.startTimeMinutes);
+        int endTimeHours = Integer.parseInt(this.endTimeHours);
+        int endTimeMinutes = Integer.parseInt(this.endTimeMinutes);
+        int breakTime = Integer.parseInt(this.breakTime);
+        int overtimeCalc = ((endTimeHours - startTimeHours) * 60 + (endTimeMinutes - startTimeMinutes)) - breakTime - 480;
+        int overtimeHours = overtimeCalc/60;
+        int overtimeMinutes = overtimeCalc%60;
+        return " / Überstunden: " + overtimeHours + " Stunden & " + overtimeMinutes + " Minuten";
     }
 
     public void redo() {
