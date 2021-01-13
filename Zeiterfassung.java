@@ -43,7 +43,9 @@ public class Zeiterfassung {
             System.out.println();
             System.out.println("Bitte geben Sie nun den Beginn Ihrer Arbeitszeit ein");
             System.out.println("(hh:mm): ");
-            String startTime = sc.next();
+            int startTimeHour = sc.nextInt();
+            System.out.print( startTimeHour  + " : " + startTimeHour );
+            int startTimeMinutes = sc.nextInt();
             System.out.println();
             System.out.println("Bitte geben Sie nun das Ende Ihrer Arbeitszeit ein");
             System.out.println("(hh:mm): ");
@@ -57,14 +59,14 @@ public class Zeiterfassung {
                     System.out.println();
                     System.out.println("Bitte geben Sie Ihre Pausenzeit in Minuten ein: ");
                     String breakTime = sc.next();
-                    this.allLines.add("Datum: " + date + " / Arbeitsbeginn: " + startTime + " - Arbeitsende: " + endTime + " / Pausendauer: " + breakTime + " min");
+                    this.allLines.add("Datum: " + date + " / Arbeitsbeginn: " + startTimeHour + " - Arbeitsende: " + endTime + " / Pausendauer: " + breakTime + " min");
                     System.out.println();
                 }
                 case "a" -> {
                     System.out.println();
                     System.out.println("30 Minuten wurden Ihrer Pausenzeit hinzugefügt");
                     System.out.println();
-                    this.allLines.add("Datum: " + date + " / Arbeitsbeginn: " + startTime + " - Arbeitsende: " + endTime + " / Pausendauer: " + "30 min");
+                    this.allLines.add("Datum: " + date + " / Arbeitsbeginn: " + startTimeHour + " - Arbeitsende: " + endTime + " / Pausendauer: " + "30 min");
                 }
                 default -> {
                     System.out.println();
