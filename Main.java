@@ -33,7 +33,7 @@ public class Main {
                 }
                 case 3 -> {
                     System.out.println();
-                    System.out.println("Arbeitszeiten bearbeiten");
+                    zeiterfassung.changeTime();
                     System.out.println();
                 }
                 case 4 -> {

@@ -15,7 +15,7 @@ public class Zeiterfassung {
     private final String path = "D:\\Programmieren\\IdeaProjects\\Zeiterfassung\\List.txt";
     private final FileOutputStream fos = new FileOutputStream(path, true);
     private final ArrayList<String> allLines = new ArrayList<>(Files.readAllLines(Paths.get(path)));
-    private boolean loop = true;
+    private boolean loop;
     private String startTimeHours;
     private String startTimeMinutes;
     private String endTimeHours;
@@ -40,7 +40,8 @@ public class Zeiterfassung {
     }
 
     public void saveTime() throws IOException {
-        while (loop) {
+        this.loop = true;
+        while (this.loop) {
             System.out.println();
             System.out.println("Bitte geben Sie das Datum des zu erfassenden Arbeitstages ein");
             System.out.println("(TT.MM.JJJJ): ");
@@ -89,6 +90,19 @@ public class Zeiterfassung {
             Collections.sort(this.allLines);
             Files.write(Paths.get(path),this.allLines);
             redo();
+        }
+    }
+
+    public void changeTime(){
+        System.out.println();
+        display();
+        System.out.println("Bitte geben Sie die Zeile an die Sie bearbeiten möchten: ");
+        this.allLines.remove(sc.nextInt()-1);
+        try {
+            saveTime();
+        }
+        catch (IOException ioe){
+            System.out.println("bla bla bla");
         }
     }
 
