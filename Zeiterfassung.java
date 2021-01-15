@@ -21,10 +21,10 @@ public class Zeiterfassung {
 
     //Constructors
     public Zeiterfassung() throws IOException {
-
     }
 
     //Methods
+    //show working time in working days
     public void display() {
         //Display all tasks
         if(this.allLines.isEmpty()){
@@ -36,7 +36,7 @@ public class Zeiterfassung {
             index++;
         }
     }
-
+    //save work time
     public void saveTime() throws IOException, IndexOutOfBoundsException{
         Scanner scSaveTime = new Scanner(System.in);
         System.out.println();
@@ -90,7 +90,7 @@ public class Zeiterfassung {
         Collections.sort(this.allLines);
         Files.write(Paths.get(path), this.allLines);
     }
-
+    //change work time
     public void changeTime() throws IOException, IndexOutOfBoundsException{
         Scanner scChangeTime = new Scanner(System.in);
         System.out.println();
@@ -103,7 +103,7 @@ public class Zeiterfassung {
             System.out.println("Ihre Daten konnten nicht gesichert werden!");
         }
     }
-
+    //show total over time
     public void totalOvertime() throws IOException, InputMismatchException {
         Scanner scTotalOvertime = new Scanner(System.in);
         int hours = 0;
@@ -144,7 +144,7 @@ public class Zeiterfassung {
             }
         }
     }
-
+    //calculate over time 
     public String overtimeCalc(){
         int startTimeHours = Integer.parseInt(this.startTimeHours);
         int startTimeMinutes = Integer.parseInt(this.startTimeMinutes);

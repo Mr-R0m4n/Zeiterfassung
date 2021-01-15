@@ -8,10 +8,11 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-
+        //create File
         final String path = "D:\\Programmieren\\IdeaProjects\\Zeiterfassung\\List.txt";
         new File(path);
         new FileOutputStream(path, true);
+
 
         Zeiterfassung zeiterfassung = new Zeiterfassung();
         boolean loop = true;
