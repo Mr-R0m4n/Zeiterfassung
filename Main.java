@@ -12,7 +12,7 @@ public class Main {
         final String path = "D:\\Programmieren\\IdeaProjects\\Zeiterfassung\\List.txt";
         new File(path);
         new FileOutputStream(path, true);
-        
+
         Zeiterfassung zeiterfassung = new Zeiterfassung();
         boolean loop = true;
         Scanner scMenu = new Scanner(System.in);

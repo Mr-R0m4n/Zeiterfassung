@@ -1,7 +1,5 @@
 package Zeiterfassung;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -23,8 +21,7 @@ public class Zeiterfassung {
 
     //Constructors
     public Zeiterfassung() throws IOException {
-        //new File(path);
-        //new FileOutputStream(path, true);
+
     }
 
     //Methods
