@@ -45,14 +45,7 @@ public class Main {
                     try {
                         zeiterfassung.changeTime();
                     }
-                    catch (IOException ioe) {
-                        System.out.println("Ihre Eingabe ist ungültig");
-                    }
-                    catch (InputMismatchException ime) {
-                        System.out.println("Ihre Eingabe ist ungültig");
-
-                    }
-                    catch (IndexOutOfBoundsException iobe) {
+                    catch (IOException | InputMismatchException | IndexOutOfBoundsException ioe) {
                         System.out.println("Ihre Eingabe ist ungültig");
                     }
                     System.out.println();
@@ -62,10 +55,7 @@ public class Main {
                     try {
                         zeiterfassung.totalOvertime();
                     }
-                    catch (IOException ioe) {
-                        System.out.println("Ihre Eingabe ist ungültig");
-                    }
-                    catch (InputMismatchException ime) {
+                    catch (IOException | InputMismatchException ioe) {
                         System.out.println("Ihre Eingabe ist ungültig");
                     }
                     System.out.println();

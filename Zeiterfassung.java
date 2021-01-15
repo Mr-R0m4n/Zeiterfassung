@@ -89,12 +89,7 @@ public class Zeiterfassung {
             }
         }
         Collections.sort(this.allLines);
-        if(path == null) {
-            throw new IOException();
-        }
-        else {
-            Files.write(Paths.get(path), this.allLines);
-        }
+        Files.write(Paths.get(path), this.allLines);
     }
 
     public void changeTime() throws IOException, IndexOutOfBoundsException{
@@ -114,13 +109,12 @@ public class Zeiterfassung {
         Scanner scTotalOvertime = new Scanner(System.in);
         int hours = 0;
         int minutes = 0;
-        int startField = 0;
         System.out.println();
         display();
         System.out.println();
         System.out.println("Geben Sie die Tage(Zeilen) von/bis an, von denen Sie Ihre geleisteten Überstunden sehen möchten");
         System.out.println("Von: ");
-        startField = scTotalOvertime.nextInt() - 1;
+        int startField = scTotalOvertime.nextInt() - 1;
         if (startField < 0) {
             throw new IOException();
         } else {
