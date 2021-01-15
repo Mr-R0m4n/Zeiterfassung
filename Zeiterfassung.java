@@ -6,16 +6,15 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Zeiterfassung {
 
     //Attributes
-    Scanner sc = new Scanner(System.in);
     private final String path = "D:\\Programmieren\\IdeaProjects\\Zeiterfassung\\List.txt";
     private final FileOutputStream fos = new FileOutputStream(path, true);
     private final ArrayList<String> allLines = new ArrayList<>(Files.readAllLines(Paths.get(path)));
-    private boolean loop;
     private String startTimeHours;
     private String startTimeMinutes;
     private String endTimeHours;
@@ -30,7 +29,7 @@ public class Zeiterfassung {
     public void display() {
         //Display all tasks
         if(this.allLines.isEmpty()){
-            System.out.println("Die Datei enthält keine Aufgaben");
+            System.out.println("Die Datei enthält keine Daten");
         }
         int index = 1;
         for (String line : this.allLines) {
@@ -39,11 +38,12 @@ public class Zeiterfassung {
         }
     }
 
-    public void saveTime() throws IOException {
+    public void saveTime() throws IOException, IndexOutOfBoundsException{
+        Scanner scSaveTime = new Scanner(System.in);
         System.out.println();
         System.out.println("Bitte geben Sie das Datum des zu erfassenden Arbeitstages ein");
         System.out.println("(TT.MM.JJJJ): ");
-        String date = sc.next();
+        String date = scSaveTime.next();
         String year = date.substring(6);
         String month = date.substring(2,6);
         String day = date.substring(0,2);
@@ -52,14 +52,14 @@ public class Zeiterfassung {
 
         System.out.println("Bitte geben Sie nun den Beginn Ihrer Arbeitszeit ein");
         System.out.println("(hh:mm): ");
-        String startTime = sc.next();
+        String startTime = scSaveTime.next();
         this.startTimeHours = startTime.replaceAll("[:]","").substring(0,2);
         this.startTimeMinutes = startTime.replaceAll("[:]","").substring(2);
         System.out.println();
 
         System.out.println("Bitte geben Sie nun das Ende Ihrer Arbeitszeit ein");
         System.out.println("(hh:mm): ");
-        String endTime = sc.next();
+        String endTime = scSaveTime.next();
         this.endTimeHours = endTime.replaceAll("[:]","").substring(0,2);
         this.endTimeMinutes = endTime.replaceAll("[:]","").substring(2);
         System.out.println();
@@ -67,11 +67,11 @@ public class Zeiterfassung {
         System.out.println("Möchten Sie Ihre Pausenzeit manuell oder automatisch (30min) erfassen?");
         System.out.println("m = Manuell");
         System.out.println("a = Automatisch");
-        switch (sc.next()) {
+        switch (scSaveTime.next()) {
             case "m" -> {
                 System.out.println();
                 System.out.println("Bitte geben Sie Ihre Pausenzeit in Minuten ein: ");
-                this.breakTime = sc.next();
+                this.breakTime = scSaveTime.next();
                 this.allLines.add("Datum: " + date + " / Arbeitsbeginn: " + startTime + " - Arbeitsende: " + endTime + " / Pausendauer: " + this.breakTime + " min" + overtimeCalc());
                 System.out.println();
             }
@@ -89,14 +89,20 @@ public class Zeiterfassung {
             }
         }
         Collections.sort(this.allLines);
-        Files.write(Paths.get(path),this.allLines);
+        if(path == null) {
+            throw new IOException();
+        }
+        else {
+            Files.write(Paths.get(path), this.allLines);
+        }
     }
 
-    public void changeTime(){
+    public void changeTime() throws IOException, IndexOutOfBoundsException{
+        Scanner scChangeTime = new Scanner(System.in);
         System.out.println();
         display();
         System.out.println("Bitte geben Sie die Zeile an die Sie bearbeiten möchten: ");
-        this.allLines.remove(sc.nextInt() - 1);
+        this.allLines.remove(scChangeTime.nextInt() - 1);
         try {
             saveTime();
         } catch (IOException ioe) {
@@ -104,40 +110,46 @@ public class Zeiterfassung {
         }
     }
 
-    public void totalOvertime(){
+    public void totalOvertime() throws IOException, InputMismatchException {
+        Scanner scTotalOvertime = new Scanner(System.in);
         int hours = 0;
         int minutes = 0;
+        int startField = 0;
         System.out.println();
         display();
         System.out.println();
         System.out.println("Geben Sie die Tage(Zeilen) von/bis an, von denen Sie Ihre geleisteten Überstunden sehen möchten");
         System.out.println("Von: ");
-        int startField = sc.nextInt()-1;
-        System.out.println("Bis: ");
-        int endField = sc.nextInt();
-        if(startField>endField) {
-            System.out.println("Bitte wählen sie Ihre Daten nach absteigender Reihenfolge aus");
-        }
-        else{
-            for(int i = 0; i < endField-startField; i++) {
-                hours = Integer.parseInt(allLines.get(startField + i).substring(99,100)) + hours;
-                minutes = Integer.parseInt(allLines.get(startField + i).substring(110,114).trim()) + minutes;
+        startField = scTotalOvertime.nextInt() - 1;
+        if (startField < 0) {
+            throw new IOException();
+        } else {
+            System.out.println("Bis: ");
+            int endField = scTotalOvertime.nextInt();
+            if (endField > this.allLines.size()) {
+                throw new IOException();
+            } else {
+                if (startField > endField) {
+                    System.out.println("Bitte wählen sie Ihre Daten nach absteigender Reihenfolge aus");
+                } else {
+                    for (int i = 0; i < endField - startField; i++) {
+                        hours = Integer.parseInt(allLines.get(startField + i).substring(99, 100)) + hours;
+                        minutes = Integer.parseInt(allLines.get(startField + i).substring(110, 114).trim()) + minutes;
+                    }
+                    if (minutes % 60 == 0) {
+                        minutes = minutes / 60;
+                        hours = hours + minutes;
+                        System.out.println("Ihre Überstunden betragen " + hours + " Stunden");
+                    } else if (minutes / 60 >= 1) {
+                        hours = hours + minutes / 60;
+                        minutes = minutes % 60;
+                        System.out.println("Ihre Überstunden betragen " + hours + " Stunden & " + minutes + " Minuten");
+                    } else {
+                        System.out.println("Ihre Überstunden betragen " + hours + " Stunden & " + minutes + " Minuten");
+                    }
                 }
-            if(minutes%60 == 0) {
-                minutes = minutes / 60;
-                hours = hours + minutes;
-                System.out.println("Ihre Überstunden betragen " + hours + " Stunden");
-            }
-            else if (minutes/60 >= 1) {
-                hours = hours + minutes/60;
-                minutes = minutes%60;
-                System.out.println("Ihre Überstunden betragen " + hours + " Stunden & " + minutes + " Minuten");
-            }
-            else {
-                System.out.println("Ihre Überstunden betragen " + hours + " Stunden & " + minutes + " Minuten");
             }
         }
-
     }
 
     public String overtimeCalc(){
@@ -154,5 +166,4 @@ public class Zeiterfassung {
 
     //Exceptions
     //Getter&Setter
-
 }

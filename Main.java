@@ -1,6 +1,7 @@
 package Zeiterfassung;
 
 import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
@@ -23,7 +24,15 @@ public class Main {
             switch (scMenu.nextInt()) {
                 case 1 -> {
                     System.out.println();
-                    zeiterfassung.saveTime();
+                    try {
+                        zeiterfassung.saveTime();
+                    }
+                    catch (IOException ioe){
+                        System.out.println("Ihre Daten konnten nicht gespeichert werden");
+                    }
+                    catch (IndexOutOfBoundsException iobe) {
+                        System.out.println("Ihre Eingabe ist ungültig");
+                    }
                     System.out.println();
                 }
                 case 2 -> {
@@ -33,12 +42,32 @@ public class Main {
                 }
                 case 3 -> {
                     System.out.println();
-                    zeiterfassung.changeTime();
+                    try {
+                        zeiterfassung.changeTime();
+                    }
+                    catch (IOException ioe) {
+                        System.out.println("Ihre Eingabe ist ungültig");
+                    }
+                    catch (InputMismatchException ime) {
+                        System.out.println("Ihre Eingabe ist ungültig");
+
+                    }
+                    catch (IndexOutOfBoundsException iobe) {
+                        System.out.println("Ihre Eingabe ist ungültig");
+                    }
                     System.out.println();
                 }
                 case 4 -> {
                     System.out.println();
-                    zeiterfassung.totalOvertime();
+                    try {
+                        zeiterfassung.totalOvertime();
+                    }
+                    catch (IOException ioe) {
+                        System.out.println("Ihre Eingabe ist ungültig");
+                    }
+                    catch (InputMismatchException ime) {
+                        System.out.println("Ihre Eingabe ist ungültig");
+                    }
                     System.out.println();
                 }
                 case 5 -> {
