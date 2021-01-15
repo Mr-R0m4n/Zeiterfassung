@@ -119,6 +119,7 @@ public class Zeiterfassung {
         } else {
             System.out.println("Bis: ");
             int endField = scTotalOvertime.nextInt();
+            System.out.println();
             if (endField > this.allLines.size()) {
                 throw new IOException();
             } else {
