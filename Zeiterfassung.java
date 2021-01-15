@@ -126,8 +126,8 @@ public class Zeiterfassung {
                     System.out.println("Bitte wählen sie Ihre Daten nach absteigender Reihenfolge aus");
                 } else {
                     for (int i = 0; i < endField - startField; i++) {
-                        hours = Integer.parseInt(allLines.get(startField + i).substring(99, 100)) + hours;
-                        minutes = Integer.parseInt(allLines.get(startField + i).substring(110, 114).trim()) + minutes;
+                        hours = Integer.parseInt(allLines.get(startField + i).substring(98, 101).trim()) + hours;
+                        minutes = Integer.parseInt(allLines.get(startField + i).substring(111, 114).trim()) + minutes;
                     }
                     if (minutes % 60 == 0) {
                         minutes = minutes / 60;
@@ -144,7 +144,7 @@ public class Zeiterfassung {
             }
         }
     }
-    //calculate over time 
+    //calculate over time
     public String overtimeCalc(){
         int startTimeHours = Integer.parseInt(this.startTimeHours);
         int startTimeMinutes = Integer.parseInt(this.startTimeMinutes);
