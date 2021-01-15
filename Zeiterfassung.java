@@ -40,8 +40,8 @@ public class Zeiterfassung {
     }
 
     public void saveTime() throws IOException {
-        this.loop = true;
-        while (this.loop) {
+        //this.loop = true;
+        //while (this.loop) {
             System.out.println();
             System.out.println("Bitte geben Sie das Datum des zu erfassenden Arbeitstages ein");
             System.out.println("(TT.MM.JJJJ): ");
@@ -51,18 +51,21 @@ public class Zeiterfassung {
             String day = date.substring(0,2);
             date =  year + month + day;
             System.out.println();
+
             System.out.println("Bitte geben Sie nun den Beginn Ihrer Arbeitszeit ein");
             System.out.println("(hh:mm): ");
             String startTime = sc.next();
             this.startTimeHours = startTime.replaceAll("[:]","").substring(0,2);
             this.startTimeMinutes = startTime.replaceAll("[:]","").substring(2);
             System.out.println();
+
             System.out.println("Bitte geben Sie nun das Ende Ihrer Arbeitszeit ein");
             System.out.println("(hh:mm): ");
             String endTime = sc.next();
             this.endTimeHours = endTime.replaceAll("[:]","").substring(0,2);
             this.endTimeMinutes = endTime.replaceAll("[:]","").substring(2);
             System.out.println();
+
             System.out.println("Möchten Sie Ihre Pausenzeit manuell oder automatisch (30min) erfassen?");
             System.out.println("m = Manuell");
             System.out.println("a = Automatisch");
@@ -89,21 +92,60 @@ public class Zeiterfassung {
             }
             Collections.sort(this.allLines);
             Files.write(Paths.get(path),this.allLines);
-            redo();
-        }
+            //redo();
+        //}
     }
 
     public void changeTime(){
+        this.loop = true;
+        while (this.loop) {
+            System.out.println();
+            display();
+            System.out.println("Bitte geben Sie die Zeile an die Sie bearbeiten möchten: ");
+            this.allLines.remove(sc.nextInt() - 1);
+            try {
+                saveTime();
+            } catch (IOException ioe) {
+                System.out.println("Ihre Daten konnten nicht gesichert werden!");
+            }
+        }
+        redo();
+    }
+
+    public void totalOvertime(){
+        int hours = 0;
+        int minutes = 0;
         System.out.println();
         display();
-        System.out.println("Bitte geben Sie die Zeile an die Sie bearbeiten möchten: ");
-        this.allLines.remove(sc.nextInt()-1);
-        try {
-            saveTime();
+        System.out.println();
+        System.out.println("Geben Sie die Tage(Zeilen) von/bis an, von denen Sie Ihre geleisteten Überstunden sehen möchten");
+        System.out.println("Von: ");
+        int startField = sc.nextInt()-1;
+        System.out.println("Bis: ");
+        int endField = sc.nextInt();
+        if(startField>endField) {
+            System.out.println("Bitte wählen sie Ihre Daten nach absteigender Reihenfolge aus");
         }
-        catch (IOException ioe){
-            System.out.println("bla bla bla");
+        else{
+            for(int i = 0; i < endField-startField; i++) {
+                hours = Integer.parseInt(allLines.get(startField + i).substring(99,100)) + hours;
+                minutes = Integer.parseInt(allLines.get(startField + i).substring(110,114).trim()) + minutes;
+                }
+            if(minutes%60 == 0) {
+                minutes = minutes / 60;
+                hours = hours + minutes;
+                System.out.println("Ihre Überstunden betragen " + hours + " Stunden");
+            }
+            else if (minutes/60 >= 1) {
+                hours = hours + minutes/60;
+                minutes = minutes%60;
+                System.out.println("Ihre Überstunden betragen " + hours + " Stunden & " + minutes + " Minuten");
+            }
+            else {
+                System.out.println("Ihre Überstunden betragen " + hours + " Stunden & " + minutes + " Minuten");
+            }
         }
+
     }
 
     public String overtimeCalc(){

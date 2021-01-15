@@ -38,7 +38,7 @@ public class Main {
                 }
                 case 4 -> {
                     System.out.println();
-                    System.out.println("Geleistete Überstunden anzeigen");
+                    zeiterfassung.totalOvertime();
                     System.out.println();
                 }
                 case 5 -> {
