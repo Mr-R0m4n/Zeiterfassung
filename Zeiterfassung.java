@@ -1,5 +1,6 @@
 package Zeiterfassung;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,7 +14,6 @@ public class Zeiterfassung {
 
     //Attributes
     private final String path = "D:\\Programmieren\\IdeaProjects\\Zeiterfassung\\List.txt";
-    private final FileOutputStream fos = new FileOutputStream(path, true);
     private final ArrayList<String> allLines = new ArrayList<>(Files.readAllLines(Paths.get(path)));
     private String startTimeHours;
     private String startTimeMinutes;
@@ -23,6 +23,8 @@ public class Zeiterfassung {
 
     //Constructors
     public Zeiterfassung() throws IOException {
+        //new File(path);
+        //new FileOutputStream(path, true);
     }
 
     //Methods

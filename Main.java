@@ -1,5 +1,7 @@
 package Zeiterfassung;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -7,6 +9,10 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) throws IOException {
 
+        final String path = "D:\\Programmieren\\IdeaProjects\\Zeiterfassung\\List.txt";
+        new File(path);
+        new FileOutputStream(path, true);
+        
         Zeiterfassung zeiterfassung = new Zeiterfassung();
         boolean loop = true;
         Scanner scMenu = new Scanner(System.in);
