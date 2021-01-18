@@ -130,17 +130,7 @@ public class Zeiterfassung {
                         hours = Integer.parseInt(allLines.get(startField + i).substring(98, 101).trim()) + hours;
                         minutes = Integer.parseInt(allLines.get(startField + i).substring(111, 114).trim()) + minutes;
                     }
-                    if (minutes % 60 == 0) {
-                        minutes = minutes / 60;
-                        hours = hours + minutes;
-                        System.out.println("Ihre Überstunden betragen " + hours + " Stunden");
-                    } else if (minutes / 60 >= 1) {
-                        hours = hours + minutes / 60;
-                        minutes = minutes % 60;
-                        System.out.println("Ihre Überstunden betragen " + hours + " Stunden & " + minutes + " Minuten");
-                    } else {
-                        System.out.println("Ihre Überstunden betragen " + hours + " Stunden & " + minutes + " Minuten");
-                    }
+                    System.out.println("Ihre Überstunden betragen " + ((hours*60)+minutes)/60 + " Stunden & " + ((hours*60)+minutes)%60 + " Minuten");
                 }
             }
         }
